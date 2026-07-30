@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE ENDLESS CASTLE</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; overflow: hidden; font-family: 'Georgia', serif; }
+    #canvas { display: block; width: 100vw; height: 100vh; }
+
+    #ui {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 10;
+    }
+
+    /* Crosshair */
+    #crosshair {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px; height: 20px;
+    }
+    #crosshair::before, #crosshair::after {
+      content: ''; position: absolute; background: rgba(200,180,140,0.7);
+    }
+    #crosshair::before { width: 1px; height: 100%; left: 50%; top: 0; }
+    #crosshair::after  { width: 100%; height: 1px; top: 50%; left: 0; }
+
+    /* HP / Stamina / Magic */
+    #stats {
+      position: absolute; bottom: 30px; left: 30px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .bar-label { color: #a89070; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2px; }
+    .bar-track {
+      width: 180px; height: 6px; background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(150,120,80,0.4);
+    }
+    .bar-fill { height: 100%; transition: width 0.2s; }
+    #hp-fill   { background: #8b1a1a; }
+    #st-fill   { background: #3a5a2a; }
+    #mp-fill   { background: #1a2a6b; }
+
+    /* Damage vignette */
+    #vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 55%, rgba(80,0,0,0) 100%);
+      transition: background 0.3s;
+      pointer-events: none;
+    }
+    #vignette.hit {
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(120,0,0,0.6) 100%);
+    }
+
+    /* Message */
+    #message {
+      position: absolute; bottom: 120px; left: 50%;
+      transform: translateX(-50%);
+      color: #c8b08c; font-size: 14px; letter-spacing: 3px;
+      text-shadow: 0 0 10px rgba(200,160,80,0.5);
+      opacity: 0; transition: opacity 0.5s;
+      text-align: center; max-width: 400px;
+    }
+
+    /* Title screen */
+    #title-screen {
+      position: fixed; inset: 0; background: #000;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 100;
+    }
+    #title-screen h1 {
+      color: #c8b08c; font-size: 48px; letter-spacing: 12px;
+      text-shadow: 0 0 40px rgba(200,160,80,0.4);
+      margin-bottom: 8px;
+    }
+    #title-screen .sub {
+      color: #5a4830; font-size: 13px; letter-spacing: 6px; margin-bottom: 60px;
+    }
+    #title-screen .start-btn {
+      color: #a08060; font-size: 14px; letter-spacing: 4px;
+      border: 1px solid rgba(160,120,80,0.4); padding: 12px 40px;
+      cursor: pointer; pointer-events: all;
+      transition: all 0.3s;
+    }
+    #title-screen .start-btn:hover {
+      color: #e0c090; border-color: rgba(200,160,80,0.8);
+      text-shadow: 0 0 20px rgba(200,160,80,0.5);
+    }
+    #title-screen .controls {
+      position: absolute; bottom: 40px;
+      color: #3a3020; font-size: 11px; letter-spacing: 2px; text-align: center;
+      line-height: 1.8;
+    }
+
+    /* Inventory */
+    #inventory {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(10,8,6,0.95);
+      border: 1px solid rgba(150,120,80,0.3);
+      padding: 30px; min-width: 320px;
+      display: none; pointer-events: all;
+      color: #a08060;
+    }
+    #inventory h2 { letter-spacing: 4px; font-size: 13px; margin-bottom: 20px; color: #c8b08c; }
+    .inv-item { padding: 8px 0; border-bottom: 1px solid rgba(80,60,40,0.3); font-size: 12px; }
+    .inv-item .item-name { color: #c8b08c; }
+    .inv-item .item-desc { color: #5a4830; font-size: 11px; margin-top: 3px; }
+
+    /* Enemy health */
+    #enemy-hp {
+      position: absolute; top: 30px; left: 50%;
+      transform: translateX(-50%);
+      display: none; text-align: center;
+    }
+    #enemy-hp .name { color: #c8b08c; font-size: 12px; letter-spacing: 3px; margin-bottom: 6px; }
+    #enemy-hp-track { width: 200px; height: 4px; background: rgba(0,0,0,0.6); border: 1px solid rgba(150,50,50,0.4); }
+    #enemy-hp-fill { height: 100%; background: #6b1a1a; transition: width 0.3s; }
+
+    /* Combat log */
+    #combat-log {
+      position: absolute; top: 30px; left: 30px;
+      color: #6a5040; font-size: 11px; letter-spacing: 1px;
+      line-height: 1.8;
+    }
+
+    /* Interact prompt */
+    #interact-prompt {
+      position: absolute; bottom: 160px; left: 50%;
+      transform: translateX(-50%);
+      color: #7a6040; font-size: 12px; letter-spacing: 3px;
+      opacity: 0; transition: opacity 0.3s;
+    }
+
+    /* Death overlay */
+    #death-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 200; pointer-events: none; transition: background 2s;
+    }
+    #death-overlay.dead {
+      background: rgba(0,0,0,0.9); pointer-events: all;
+    }
+    #death-overlay h2 { color: #6b1a1a; font-size: 32px; letter-spacing: 8px; opacity: 0; transition: opacity 2s; }
+    #death-overlay.dead h2 { opacity: 1; }
+    #death-overlay .restart { color: #5a3020; font-size: 12px; letter-spacing: 3px; margin-top: 30px; cursor: pointer; opacity: 0; transition: opacity 3s 1s; }
+    #death-overlay.dead .restart { opacity: 1; }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div id="ui">
+    <div id="crosshair"></div>
+    <div id="vignette"></div>
+
+    <div id="stats">
+      <div>
+        <div class="bar-label">Life</div>
+        <div class="bar-track"><div class="bar-fill" id="hp-fill" style="width:100%"></div></div>
+      </div>
+      <div>
+        <div class="bar-label">Stamina</div>
+        <div class="bar-track"><div class="bar-fill" id="st-fill" style="width:100%"></div></div>
+      </div>
+      <div>
+        <div class="bar-label">Magic</div>
+        <div class="bar-track"><div class="bar-fill" id="mp-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <div id="message"></div>
+    <div id="interact-prompt">[ E ] 調べる</div>
+    <div id="combat-log"></div>
+
+    <div id="enemy-hp">
+      <div class="name" id="enemy-name">亡霊騎士</div>
+      <div id="enemy-hp-track"><div id="enemy-hp-fill"></div></div>
+    </div>
+
+    <div id="inventory">
+      <h2>— 所持品 —</h2>
+      <div id="inv-list"></div>
+    </div>
+  </div>
+
+  <div id="title-screen">
+    <h1>THE ENDLESS<br>CASTLE</h1>
+    <div class="sub">― 終わりなき城 ―</div>
+    <div class="start-btn" onclick="startGame()">旅を始める</div>
+    <div class="controls">
+      WASD / 矢印キー ― 移動 &nbsp;|&nbsp; マウス ― 視点
+      <br>左クリック ― 攻撃 &nbsp;|&nbsp; E ― 調べる / 扉を開く
+      <br>I ― 所持品 &nbsp;|&nbsp; Shift ― 走る &nbsp;|&nbsp; Space ― 魔法
+    </div>
+  </div>
+
+  <div id="death-overlay">
+    <h2>― 死 ―</h2>
+    <div class="restart" onclick="location.reload()">再び立つ</div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
