@@ -14,7 +14,14 @@ export let player, dungeon, enemies, ui, audio, save, mapSys, boss;
 
 window.startGame = function() {
   document.getElementById('title-screen').style.display = 'none';
-  init();
+  try {
+    init();
+  } catch (e) {
+    console.error('init failed:', e);
+    document.body.insertAdjacentHTML('beforeend',
+      `<div style="position:fixed;top:10px;left:10px;color:#f44;font-size:12px;z-index:999;white-space:pre-wrap;pointer-events:none">${e.message}\n${e.stack}</div>`
+    );
+  }
 };
 
 function init() {
@@ -26,11 +33,11 @@ function init() {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.toneMapping = THREE.ReinhardToneMapping;
-  renderer.toneMappingExposure = 0.6;
-  renderer.setClearColor(0x000000);
+  renderer.toneMappingExposure = 1.4;
+  renderer.setClearColor(0x06050a);
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x0a0806, 0.045);
+  scene.fog = new THREE.FogExp2(0x0a0810, 0.022);
 
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 80);
   camera.position.set(0, 1.7, 0);

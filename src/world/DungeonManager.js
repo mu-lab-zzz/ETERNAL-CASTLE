@@ -43,8 +43,12 @@ export class DungeonManager {
   }
 
   _addAmbient() {
-    const amb = new THREE.AmbientLight(0x100c08, 0.3);
+    // Warm dungeon ambient — dim but not black
+    const amb = new THREE.AmbientLight(0x6a5038, 1.0);
     this.scene.add(amb);
+    // Dim blue fill from above (simulates faint sky through cracks)
+    const fill = new THREE.HemisphereLight(0x202840, 0x100808, 0.4);
+    this.scene.add(fill);
   }
 
   _buildRoom(r) {
@@ -54,15 +58,13 @@ export class DungeonManager {
     const cz = r.z * CELL;
     const H = 5;
 
-    const floorGeo = new THREE.BoxGeometry(W, 0.2, D);
-    const floorMesh = new THREE.Mesh(floorGeo, this._mats.floor);
+    const floorMesh = new THREE.Mesh(new THREE.BoxGeometry(W, 0.2, D), this._mats.floor);
     floorMesh.position.set(cx, -0.1, cz);
     floorMesh.receiveShadow = true;
     this.scene.add(floorMesh);
     this.floors.push(floorMesh);
 
-    const ceilGeo = new THREE.BoxGeometry(W, 0.2, D);
-    const ceilMesh = new THREE.Mesh(ceilGeo, this._mats.ceil);
+    const ceilMesh = new THREE.Mesh(new THREE.BoxGeometry(W, 0.2, D), this._mats.ceil);
     ceilMesh.position.set(cx, H, cz);
     this.scene.add(ceilMesh);
 
@@ -72,12 +74,18 @@ export class DungeonManager {
     this._wall(cx, H/2, cz - D/2 - 0.15, W + 0.3, H, 0.3);
     this._wall(cx, H/2, cz + D/2 + 0.15, W + 0.3, H, 0.3);
 
-    // Torches
-    this._torch(cx - W/2 + 0.5, 2.5, cz);
-    this._torch(cx + W/2 - 0.5, 2.5, cz);
-    if (D > 12) {
-      this._torch(cx - W/2 + 0.5, 2.5, cz - D/4);
-      this._torch(cx + W/2 - 0.5, 2.5, cz - D/4);
+    // Torches on walls — placed at quarter-width intervals so light covers center
+    const xSteps = Math.max(1, Math.floor(W / 8));
+    const zSteps = Math.max(1, Math.floor(D / 8));
+    for (let zi = 0; zi < zSteps; zi++) {
+      const tz = cz - D/2 + (zi + 0.5) * (D / zSteps);
+      this._torch(cx - W/2 + 0.3, 2.5, tz);
+      this._torch(cx + W/2 - 0.3, 2.5, tz);
+    }
+    for (let xi = 0; xi < xSteps; xi++) {
+      const tx = cx - W/2 + (xi + 0.5) * (W / xSteps);
+      this._torch(tx, 2.5, cz - D/2 + 0.3);
+      this._torch(tx, 2.5, cz + D/2 - 0.3);
     }
 
     // Pillars for large rooms
@@ -124,11 +132,10 @@ export class DungeonManager {
     fMesh.position.set(x, y + 0.25, z);
     this.scene.add(fMesh);
 
-    // Point light
-    const light = new THREE.PointLight(0xff6020, 1.2, 8, 2);
+    // Point light — wider range so center of room is lit, no shadows for performance
+    const light = new THREE.PointLight(0xff7030, 2.0, 14, 2);
     light.position.set(x, y + 0.3, z);
-    light.castShadow = true;
-    light.shadow.mapSize.set(256, 256);
+    light.castShadow = false;
     this.scene.add(light);
     this.lights.push({ light, baseY: y + 0.3, time: Math.random() * Math.PI * 2 });
   }

@@ -40,9 +40,11 @@ export function buildUnderground(scene, walls, interactables) {
     _wall(scene, walls, stone, cx, Y_OFFSET + H/2, cz - D/2 - 0.15, W + 0.3, H, 0.3);
     _wall(scene, walls, stone, cx, Y_OFFSET + H/2, cz + D/2 + 0.15, W + 0.3, H, 0.3);
 
-    // Wall sconces (dim)
-    _sconce(scene, cx - W/2 + 0.3, Y_OFFSET + 2, cz, 0.4, 4);
-    _sconce(scene, cx + W/2 - 0.3, Y_OFFSET + 2, cz, 0.4, 4);
+    // Wall sconces
+    _sconce(scene, cx - W/2 + 0.3, Y_OFFSET + 2, cz - D/4, 1.2, 10);
+    _sconce(scene, cx + W/2 - 0.3, Y_OFFSET + 2, cz - D/4, 1.2, 10);
+    _sconce(scene, cx - W/2 + 0.3, Y_OFFSET + 2, cz + D/4, 1.2, 10);
+    _sconce(scene, cx + W/2 - 0.3, Y_OFFSET + 2, cz + D/4, 1.2, 10);
 
     // Water puddles on floor (visual only)
     if (r.label === '水路') {
