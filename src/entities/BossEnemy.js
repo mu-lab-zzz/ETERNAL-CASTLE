@@ -1,8 +1,6 @@
-import * as THREE from '/vendor/three.module.js';
-
 // Phase 1 boss: Ancient Knight Guardian
 // Encountered deep in the underground chapel
-export class BossEnemy {
+class BossEnemy {
   constructor(scene, position, ui) {
     this.scene    = scene;
     this.ui       = ui;

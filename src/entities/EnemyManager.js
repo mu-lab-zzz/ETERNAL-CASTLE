@@ -1,5 +1,3 @@
-import * as THREE from '/vendor/three.module.js';
-
 const ENEMY_DEFS = {
   ghost_knight: {
     name: '亡霊騎士',
@@ -45,7 +43,7 @@ const ENEMY_DEFS = {
   },
 };
 
-export class Enemy {
+class Enemy {
   constructor(scene, def, position) {
     this.scene = scene;
     this.def   = { ...def };
@@ -246,7 +244,7 @@ export class Enemy {
   }
 }
 
-export class EnemyManager {
+class EnemyManager {
   constructor(scene, camera) {
     this.scene   = scene;
     this.camera  = camera;

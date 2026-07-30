@@ -1,6 +1,6 @@
 const SAVE_KEY = 'endless_castle_save';
 
-export class SaveSystem {
+class SaveSystem {
   save(state) {
     try {
       localStorage.setItem(SAVE_KEY, JSON.stringify({

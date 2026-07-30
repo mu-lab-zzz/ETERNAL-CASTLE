@@ -1,4 +1,4 @@
-export class UIManager {
+class UIManager {
   constructor() {
     this._msgTimeout = null;
     this._enemyHpTimeout = null;

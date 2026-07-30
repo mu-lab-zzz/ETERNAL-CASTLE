@@ -1,5 +1,3 @@
-import * as THREE from '/vendor/three.module.js';
-
 const CELL = 4; // 4m per tile
 
 // Room templates: array of [x, z, w, d] tiles
@@ -12,7 +10,7 @@ const ENTRANCE_ROOMS = [
   { id: 'dungeon_stair', x: 1, z:-9, w: 2, d: 2,  label: '地下への階段' },
 ];
 
-export class DungeonManager {
+class DungeonManager {
   constructor(scene) {
     this.scene = scene;
     this.walls = [];   // collision boxes

@@ -1,8 +1,6 @@
-import * as THREE from '/vendor/three.module.js';
-
 // The underground level — darker, wetter, more oppressive
 // Connected to entrance via the locked north corridor stairwell
-export function buildUnderground(scene, walls, interactables) {
+function buildUnderground(scene, walls, interactables) {
   const stone = new THREE.MeshStandardMaterial({ color: 0x18100c, roughness: 0.98, metalness: 0 });
   const wet   = new THREE.MeshStandardMaterial({ color: 0x0e0c0a, roughness: 0.6, metalness: 0.3 });
 

@@ -1,5 +1,3 @@
-import * as THREE from '/vendor/three.module.js';
-
 const WALK_SPEED  = 3.5;
 const RUN_SPEED   = 6.0;
 const STAMINA_MAX = 100;
@@ -14,7 +12,7 @@ const JOYSTICK_RADIUS = 65; // px, half the outer circle
 const LOOK_SENSITIVITY_MOUSE = 0.002;
 const LOOK_SENSITIVITY_TOUCH = 0.005;
 
-export class PlayerController {
+class PlayerController {
   constructor(camera, scene, dungeon, enemies, ui, audio) {
     this.camera  = camera;
     this.scene   = scene;

@@ -1,16 +1,5 @@
-import * as THREE from '/vendor/three.module.js';
-import { PlayerController }  from './systems/PlayerController.js';
-import { DungeonManager }    from './world/DungeonManager.js';
-import { EnemyManager }      from './entities/EnemyManager.js';
-import { UIManager }         from './systems/UIManager.js';
-import { SaveSystem }        from './systems/SaveSystem.js';
-import { AudioSystem }       from './systems/AudioSystem.js';
-import { MapSystem }         from './world/MapSystem.js';
-import { buildUnderground }  from './world/UndergroundLevel.js';
-import { BossEnemy }         from './entities/BossEnemy.js';
-
-export let scene, camera, renderer, clock;
-export let player, dungeon, enemies, ui, audio, save, mapSys, boss;
+let scene, camera, renderer, clock;
+let player, dungeon, enemies, ui, audio, save, mapSys, boss;
 
 window.startGame = function() {
   document.getElementById('title-screen').style.display = 'none';

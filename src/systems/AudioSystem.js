@@ -1,5 +1,5 @@
 // Web Audio API — procedural sound generation (no external assets needed)
-export class AudioSystem {
+class AudioSystem {
   constructor() {
     this._ctx = null;
   }

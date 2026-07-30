@@ -1,5 +1,5 @@
 // 2D minimap rendered on a canvas overlay
-export class MapSystem {
+class MapSystem {
   constructor() {
     this.discovered = new Set();
     this.rooms = [];
