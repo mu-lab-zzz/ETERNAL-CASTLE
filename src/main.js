@@ -22,11 +22,11 @@ function init() {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.toneMapping = THREE.ReinhardToneMapping;
-  renderer.toneMappingExposure = 1.4;
-  renderer.setClearColor(0x06050a);
+  renderer.toneMappingExposure = 2.0;
+  renderer.setClearColor(0x08070d);
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x0a0810, 0.022);
+  scene.fog = new THREE.FogExp2(0x0a0810, 0.015);
 
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 80);
   camera.position.set(0, 1.7, 0);

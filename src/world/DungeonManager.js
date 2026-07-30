@@ -23,11 +23,11 @@ class DungeonManager {
   }
 
   _buildMaterials() {
-    const stone = new THREE.MeshStandardMaterial({ color: 0x2a2420, roughness: 0.95, metalness: 0.05 });
-    const floor  = new THREE.MeshStandardMaterial({ color: 0x1e1a18, roughness: 0.9, metalness: 0.02 });
-    const ceil   = new THREE.MeshStandardMaterial({ color: 0x181410, roughness: 1, metalness: 0 });
-    const wood   = new THREE.MeshStandardMaterial({ color: 0x3a2810, roughness: 0.85, metalness: 0 });
-    const iron   = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.7, metalness: 0.8 });
+    const stone = new THREE.MeshStandardMaterial({ color: 0x584a40, roughness: 0.95, metalness: 0.05 });
+    const floor  = new THREE.MeshStandardMaterial({ color: 0x483c34, roughness: 0.9, metalness: 0.02 });
+    const ceil   = new THREE.MeshStandardMaterial({ color: 0x302825, roughness: 1, metalness: 0 });
+    const wood   = new THREE.MeshStandardMaterial({ color: 0x5a4020, roughness: 0.85, metalness: 0 });
+    const iron   = new THREE.MeshStandardMaterial({ color: 0x2a2a2a, roughness: 0.7, metalness: 0.8 });
     const torch  = new THREE.MeshStandardMaterial({ color: 0xff6020, emissive: 0xff4010, emissiveIntensity: 1.5, roughness: 1 });
     return { stone, floor, ceil, wood, iron, torch };
   }
@@ -41,11 +41,11 @@ class DungeonManager {
   }
 
   _addAmbient() {
-    // Warm dungeon ambient — dim but not black
-    const amb = new THREE.AmbientLight(0x6a5038, 1.0);
+    // Strong warm ambient — ensures dungeon is visible even far from torches
+    const amb = new THREE.AmbientLight(0xffd090, 3.0);
     this.scene.add(amb);
-    // Dim blue fill from above (simulates faint sky through cracks)
-    const fill = new THREE.HemisphereLight(0x202840, 0x100808, 0.4);
+    // Cool fill from above (cracks in ceiling)
+    const fill = new THREE.HemisphereLight(0x405888, 0x302010, 2.0);
     this.scene.add(fill);
   }
 
@@ -130,12 +130,12 @@ class DungeonManager {
     fMesh.position.set(x, y + 0.25, z);
     this.scene.add(fMesh);
 
-    // Point light — wider range so center of room is lit, no shadows for performance
-    const light = new THREE.PointLight(0xff7030, 2.0, 14, 2);
+    // Bright point light — high intensity + large range to reach room center
+    const light = new THREE.PointLight(0xff8040, 12.0, 40, 2);
     light.position.set(x, y + 0.3, z);
     light.castShadow = false;
     this.scene.add(light);
-    this.lights.push({ light, baseY: y + 0.3, baseIntensity: 2.0, time: Math.random() * Math.PI * 2 });
+    this.lights.push({ light, baseY: y + 0.3, baseIntensity: 12.0, time: Math.random() * Math.PI * 2 });
   }
 
   _addDoors() {

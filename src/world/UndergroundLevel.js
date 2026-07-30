@@ -1,8 +1,8 @@
 // The underground level — darker, wetter, more oppressive
 // Connected to entrance via the locked north corridor stairwell
 function buildUnderground(scene, walls, interactables) {
-  const stone = new THREE.MeshStandardMaterial({ color: 0x18100c, roughness: 0.98, metalness: 0 });
-  const wet   = new THREE.MeshStandardMaterial({ color: 0x0e0c0a, roughness: 0.6, metalness: 0.3 });
+  const stone = new THREE.MeshStandardMaterial({ color: 0x38281e, roughness: 0.98, metalness: 0 });
+  const wet   = new THREE.MeshStandardMaterial({ color: 0x1e1a14, roughness: 0.6, metalness: 0.3 });
 
   const ROOMS = [
     { x:-2, z:-16, w:4, d:4, label:'地下牢 I', H:3.5 },
@@ -39,10 +39,10 @@ function buildUnderground(scene, walls, interactables) {
     _wall(scene, walls, stone, cx, Y_OFFSET + H/2, cz + D/2 + 0.15, W + 0.3, H, 0.3);
 
     // Wall sconces
-    _sconce(scene, cx - W/2 + 0.3, Y_OFFSET + 2, cz - D/4, 1.2, 10);
-    _sconce(scene, cx + W/2 - 0.3, Y_OFFSET + 2, cz - D/4, 1.2, 10);
-    _sconce(scene, cx - W/2 + 0.3, Y_OFFSET + 2, cz + D/4, 1.2, 10);
-    _sconce(scene, cx + W/2 - 0.3, Y_OFFSET + 2, cz + D/4, 1.2, 10);
+    _sconce(scene, cx - W/2 + 0.3, Y_OFFSET + 2, cz - D/4, 8.0, 28);
+    _sconce(scene, cx + W/2 - 0.3, Y_OFFSET + 2, cz - D/4, 8.0, 28);
+    _sconce(scene, cx - W/2 + 0.3, Y_OFFSET + 2, cz + D/4, 8.0, 28);
+    _sconce(scene, cx + W/2 - 0.3, Y_OFFSET + 2, cz + D/4, 8.0, 28);
 
     // Water puddles on floor (visual only)
     if (r.label === '水路') {
