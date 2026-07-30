@@ -1,8 +1,8 @@
 // The underground level — darker, wetter, more oppressive
 // Connected to entrance via the locked north corridor stairwell
 function buildUnderground(scene, walls, interactables) {
-  const stone = new THREE.MeshStandardMaterial({ color: 0x38281e, roughness: 0.98, metalness: 0 });
-  const wet   = new THREE.MeshStandardMaterial({ color: 0x1e1a14, roughness: 0.6, metalness: 0.3 });
+  const stone = new THREE.MeshStandardMaterial({ color: 0x6a5a4a, roughness: 0.98, metalness: 0 });
+  const wet   = new THREE.MeshStandardMaterial({ color: 0x4a5a6a, roughness: 0.6, metalness: 0.3 });
 
   const ROOMS = [
     { x:-2, z:-16, w:4, d:4, label:'地下牢 I', H:3.5 },

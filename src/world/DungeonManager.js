@@ -23,11 +23,11 @@ class DungeonManager {
   }
 
   _buildMaterials() {
-    const stone = new THREE.MeshStandardMaterial({ color: 0x584a40, roughness: 0.95, metalness: 0.05 });
-    const floor  = new THREE.MeshStandardMaterial({ color: 0x483c34, roughness: 0.9, metalness: 0.02 });
-    const ceil   = new THREE.MeshStandardMaterial({ color: 0x302825, roughness: 1, metalness: 0 });
-    const wood   = new THREE.MeshStandardMaterial({ color: 0x5a4020, roughness: 0.85, metalness: 0 });
-    const iron   = new THREE.MeshStandardMaterial({ color: 0x2a2a2a, roughness: 0.7, metalness: 0.8 });
+    const stone = new THREE.MeshStandardMaterial({ color: 0x8a7a6a, roughness: 0.9, metalness: 0.05 });
+    const floor  = new THREE.MeshStandardMaterial({ color: 0x6a5e54, roughness: 0.9, metalness: 0.02 });
+    const ceil   = new THREE.MeshStandardMaterial({ color: 0x7a6a5a, roughness: 1, metalness: 0 });
+    const wood   = new THREE.MeshStandardMaterial({ color: 0x8a6030, roughness: 0.85, metalness: 0 });
+    const iron   = new THREE.MeshStandardMaterial({ color: 0x606060, roughness: 0.7, metalness: 0.8 });
     const torch  = new THREE.MeshStandardMaterial({ color: 0xff6020, emissive: 0xff4010, emissiveIntensity: 1.5, roughness: 1 });
     return { stone, floor, ceil, wood, iron, torch };
   }
@@ -41,12 +41,8 @@ class DungeonManager {
   }
 
   _addAmbient() {
-    // Strong warm ambient — ensures dungeon is visible even far from torches
-    const amb = new THREE.AmbientLight(0xffd090, 3.0);
+    const amb = new THREE.AmbientLight(0xffffff, 5.0);
     this.scene.add(amb);
-    // Cool fill from above (cracks in ceiling)
-    const fill = new THREE.HemisphereLight(0x405888, 0x302010, 2.0);
-    this.scene.add(fill);
   }
 
   _buildRoom(r) {
