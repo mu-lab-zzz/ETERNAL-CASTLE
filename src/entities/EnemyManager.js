@@ -269,13 +269,19 @@ export class EnemyManager {
     this.enemies.push(e);
   }
 
+  addBoss(boss) {
+    this.boss = boss;
+  }
+
   update(dt, player) {
     for (const e of this.enemies) e.update(dt, player);
+    if (this.boss) this.boss.update(dt, player);
   }
 
   checkHit(ray, maxDist) {
     let best = null, bestDist = maxDist;
-    for (const e of this.enemies) {
+    const targets = [...this.enemies, ...(this.boss ? [this.boss] : [])];
+    for (const e of targets) {
       if (!e.alive) continue;
       const box  = e.getBoundingBox();
       const hits = ray.ray.intersectBox(box, new THREE.Vector3());

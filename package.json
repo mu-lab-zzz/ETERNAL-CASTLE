@@ -1,0 +1,10 @@
+{
+  "name": "the-endless-castle",
+  "version": "0.1.0",
+  "description": "THE ENDLESS CASTLE — First-person dark fantasy RPG",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve . -l 3000",
+    "build": "echo 'Static project — no build step needed. Open index.html via a local server.'"
+  }
+}

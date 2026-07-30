@@ -55,8 +55,7 @@ export class DungeonManager {
     const H = 5;
 
     const floorGeo = new THREE.BoxGeometry(W, 0.2, D);
-    const floorMesh = new THREE.Mesh(floorGeo, this.scene._mats ? this.scene._mats.floor : this._mats.floor);
-    floorMesh.material = this._mats.floor;
+    const floorMesh = new THREE.Mesh(floorGeo, this._mats.floor);
     floorMesh.position.set(cx, -0.1, cz);
     floorMesh.receiveShadow = true;
     this.scene.add(floorMesh);
