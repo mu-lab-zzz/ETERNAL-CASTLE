@@ -18,14 +18,8 @@ class BossEnemy {
   _buildMesh(pos) {
     const group = new THREE.Group();
 
-    // Main body — massive armored knight
-    const bodyMat = new THREE.MeshStandardMaterial({
-      color: 0x1a1820, roughness: 0.7, metalness: 0.8,
-      emissive: 0x080412, emissiveIntensity: 0.3,
-    });
-    const eyeMat = new THREE.MeshStandardMaterial({
-      color: 0x4020a0, emissive: 0x2010a0, emissiveIntensity: 3, roughness: 1,
-    });
+    const bodyMat = new THREE.MeshBasicMaterial({ color: 0x9090cc });
+    const eyeMat  = new THREE.MeshBasicMaterial({ color: 0xff44ff });
 
     // Torso
     const tGeo  = new THREE.BoxGeometry(1.2, 1.5, 0.8);
@@ -68,10 +62,7 @@ class BossEnemy {
 
     // Great sword (right hand)
     const bladeGeo = new THREE.BoxGeometry(0.12, 2.5, 0.08);
-    const bladeMat = new THREE.MeshStandardMaterial({
-      color: 0x3040a0, roughness: 0.2, metalness: 0.95,
-      emissive: 0x1020a0, emissiveIntensity: 0.8,
-    });
+    const bladeMat = new THREE.MeshBasicMaterial({ color: 0x6688ff });
     const blade = new THREE.Mesh(bladeGeo, bladeMat);
     blade.position.set(1.1, 0.8, 0);
     group.add(blade);
@@ -188,9 +179,7 @@ class BossEnemy {
     this.phase = 2;
     this.state = 'phase2';
     this.ui.showMessage('「城は死なぬ…\n人間よ、城に飲まれろ！」', 5000);
-    // Blade glows brighter
-    this._blade.material.emissiveIntensity = 3;
-    this._blade.material.emissive.set(0x6040ff);
+    this._blade.material.color.set(0xaabbff);
   }
 
   _swingAnim() {
@@ -239,9 +228,9 @@ class BossEnemy {
     // Flash
     this.mesh.children.forEach(c => {
       if (c.material) {
-        const orig = c.material.emissiveIntensity || 0;
-        c.material.emissiveIntensity = 5;
-        setTimeout(() => { if (c.material) c.material.emissiveIntensity = orig; }, 100);
+        const orig = c.material.color.getHex();
+        c.material.color.set(0xff4444);
+        setTimeout(() => { if (c.material) c.material.color.set(orig); }, 100);
       }
     });
 

@@ -36,15 +36,7 @@ function init() {
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 200);
   camera.position.set(0, 1.7, 0);
 
-  // Debug: bright red cube directly in front of camera
-  const dbgMesh = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial({ color: 0xff0000 })
-  );
-  dbgMesh.position.set(0, 1.7, -3);
-  scene.add(dbgMesh);
-
-  ui     = new UIManager();
+ui     = new UIManager();
   audio  = new AudioSystem();
   save   = new SaveSystem();
   mapSys = new MapSystem();

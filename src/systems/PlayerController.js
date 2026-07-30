@@ -63,14 +63,10 @@ class PlayerController {
 
   _buildWeaponMesh() {
     const group = new THREE.Group();
-    const bladeMat  = new THREE.MeshStandardMaterial({ color: 0x8090c0, roughness: 0.3, metalness: 0.9 });
-    const guardMat  = new THREE.MeshStandardMaterial({ color: 0x5a4020, roughness: 0.7 });
-    const handleMat = new THREE.MeshStandardMaterial({ color: 0x3a2810, roughness: 0.9 });
-
-    const blade  = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.7, 0.05), bladeMat);
+    const blade  = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.7, 0.05), new THREE.MeshBasicMaterial({ color: 0xaabbdd }));
     blade.position.y = 0.35;
-    const guard  = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.05, 0.05), guardMat);
-    const handle = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.25, 0.05), handleMat);
+    const guard  = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.05, 0.05), new THREE.MeshBasicMaterial({ color: 0x8a6030 }));
+    const handle = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.25, 0.05), new THREE.MeshBasicMaterial({ color: 0x6a4820 }));
     handle.position.y = -0.15;
     group.add(blade, guard, handle);
     group.visible = false;

@@ -8,8 +8,7 @@ const ENEMY_DEFS = {
     attackRange: 1.5,
     detectionRange: 9,
     attackCooldown: 2.0,
-    color: 0x3a4a6a,
-    emissive: 0x102030,
+    color: 0x7088cc,
     height: 1.8,
     scale: 1.0,
   },
@@ -22,8 +21,7 @@ const ENEMY_DEFS = {
     attackRange: 1.4,
     detectionRange: 7,
     attackCooldown: 1.5,
-    color: 0x3a2a1a,
-    emissive: 0x100800,
+    color: 0xaa6644,
     height: 1.6,
     scale: 0.85,
   },
@@ -36,8 +34,7 @@ const ENEMY_DEFS = {
     attackRange: 1.2,
     detectionRange: 6,
     attackCooldown: 1.2,
-    color: 0x1a1a1a,
-    emissive: 0x0a0000,
+    color: 0x888888,
     height: 0.8,
     scale: 0.7,
   },
@@ -68,19 +65,14 @@ class Enemy {
 
   _build(def) {
     const group = new THREE.Group();
-    const mat = new THREE.MeshStandardMaterial({
-      color: def.color, emissive: def.emissive, emissiveIntensity: 0.5,
-      roughness: 0.9, metalness: 0.1,
-    });
+    const mat = new THREE.MeshBasicMaterial({ color: def.color });
     const s = def.scale;
 
     if (def.name === '巨大蜘蛛') {
-      // Spider body
       const bodyGeo = new THREE.SphereGeometry(0.35 * s, 8, 6);
       const body = new THREE.Mesh(bodyGeo, mat);
       body.position.y = 0.4 * s;
       group.add(body);
-      // Legs
       for (let i = 0; i < 8; i++) {
         const legGeo = new THREE.BoxGeometry(0.06 * s, 0.04 * s, 0.5 * s);
         const leg = new THREE.Mesh(legGeo, mat);
@@ -90,7 +82,6 @@ class Enemy {
         group.add(leg);
       }
     } else {
-      // Humanoid
       const bodyGeo = new THREE.BoxGeometry(0.5 * s, 0.9 * s, 0.3 * s);
       const body = new THREE.Mesh(bodyGeo, mat);
       body.position.y = 1.0 * s;
@@ -101,31 +92,30 @@ class Enemy {
       head.position.y = 1.65 * s;
       group.add(head);
 
-      // Sword arm
       if (def.name === '亡霊騎士') {
         const armGeo = new THREE.BoxGeometry(0.12 * s, 0.6 * s, 0.1 * s);
         const arm = new THREE.Mesh(armGeo, mat);
         arm.position.set(0.38 * s, 0.95 * s, 0);
         arm.rotation.z = 0.3;
         group.add(arm);
-        // Sword
-        const swordGeo = new THREE.BoxGeometry(0.04, 0.65, 0.04);
-        const swordMat = new THREE.MeshStandardMaterial({ color: 0x7080a0, roughness: 0.3, metalness: 0.9 });
-        const sword = new THREE.Mesh(swordGeo, swordMat);
+        const sword = new THREE.Mesh(
+          new THREE.BoxGeometry(0.04, 0.65, 0.04),
+          new THREE.MeshBasicMaterial({ color: 0xaabbdd })
+        );
         sword.position.set(0.55 * s, 0.8 * s, 0);
         group.add(sword);
       }
 
-      // Legs
-      [-0.15, 0.15].forEach((xOff, i) => {
-        const legGeo = new THREE.BoxGeometry(0.18 * s, 0.55 * s, 0.2 * s);
-        const leg = new THREE.Mesh(legGeo, mat);
+      [-0.15, 0.15].forEach(xOff => {
+        const leg = new THREE.Mesh(
+          new THREE.BoxGeometry(0.18 * s, 0.55 * s, 0.2 * s),
+          mat
+        );
         leg.position.set(xOff * s, 0.3 * s, 0);
         group.add(leg);
       });
     }
 
-    group.castShadow = true;
     return group;
   }
 
@@ -200,15 +190,9 @@ class Enemy {
     // Flash red
     this.mesh.children.forEach(c => {
       if (c.material) {
-        const orig = c.material.emissiveIntensity;
-        c.material.emissiveIntensity = 3;
-        c.material.emissive.set(0x800000);
-        setTimeout(() => {
-          if (c.material) {
-            c.material.emissiveIntensity = orig;
-            c.material.emissive.set(this.def.emissive);
-          }
-        }, 150);
+        const orig = c.material.color.getHex();
+        c.material.color.set(0xff2020);
+        setTimeout(() => { if (c.material) c.material.color.set(orig); }, 150);
       }
     });
 
