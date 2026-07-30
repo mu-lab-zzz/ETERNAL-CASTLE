@@ -3,12 +3,21 @@ let player, dungeon, enemies, ui, audio, save, mapSys, boss;
 
 window.startGame = function() {
   document.getElementById('title-screen').style.display = 'none';
+
+  // THREE availability check
+  if (typeof THREE === 'undefined') {
+    document.body.insertAdjacentHTML('beforeend',
+      '<div style="position:fixed;top:0;left:0;width:100%;padding:20px;color:#f00;font-size:18px;font-weight:bold;background:#000;z-index:9999">ERROR: THREE is undefined — three.min.js did not load</div>'
+    );
+    return;
+  }
+
   try {
     init();
   } catch (e) {
     console.error('init failed:', e);
     document.body.insertAdjacentHTML('beforeend',
-      `<div style="position:fixed;top:10px;left:10px;color:#f44;font-size:12px;z-index:999;white-space:pre-wrap;pointer-events:none">${e.message}\n${e.stack}</div>`
+      `<div style="position:fixed;top:0;left:0;width:100%;padding:10px;color:#f44;font-size:12px;background:rgba(0,0,0,0.9);z-index:9999;white-space:pre-wrap">${e.message}\n${e.stack}</div>`
     );
   }
 };
@@ -18,18 +27,22 @@ function init() {
 
   renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), antialias: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.enabled = false;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-  renderer.toneMapping = THREE.NoToneMapping;
-  renderer.toneMappingExposure = 1.0;
-  renderer.setClearColor(0x222233);
+  renderer.setClearColor(0x334455);
 
   scene = new THREE.Scene();
-  // fog disabled for testing
 
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 80);
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 200);
   camera.position.set(0, 1.7, 0);
+
+  // Debug: bright red cube directly in front of camera
+  const dbgMesh = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshBasicMaterial({ color: 0xff0000 })
+  );
+  dbgMesh.position.set(0, 1.7, -3);
+  scene.add(dbgMesh);
 
   ui     = new UIManager();
   audio  = new AudioSystem();

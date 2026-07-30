@@ -23,12 +23,12 @@ class DungeonManager {
   }
 
   _buildMaterials() {
-    const stone = new THREE.MeshStandardMaterial({ color: 0x8a7a6a, roughness: 0.9, metalness: 0.05 });
-    const floor  = new THREE.MeshStandardMaterial({ color: 0x6a5e54, roughness: 0.9, metalness: 0.02 });
-    const ceil   = new THREE.MeshStandardMaterial({ color: 0x7a6a5a, roughness: 1, metalness: 0 });
-    const wood   = new THREE.MeshStandardMaterial({ color: 0x8a6030, roughness: 0.85, metalness: 0 });
-    const iron   = new THREE.MeshStandardMaterial({ color: 0x606060, roughness: 0.7, metalness: 0.8 });
-    const torch  = new THREE.MeshStandardMaterial({ color: 0xff6020, emissive: 0xff4010, emissiveIntensity: 1.5, roughness: 1 });
+    const stone = new THREE.MeshBasicMaterial({ color: 0x8a7a6a });
+    const floor  = new THREE.MeshBasicMaterial({ color: 0x6a5e54 });
+    const ceil   = new THREE.MeshBasicMaterial({ color: 0x5a5040 });
+    const wood   = new THREE.MeshBasicMaterial({ color: 0x8a6030 });
+    const iron   = new THREE.MeshBasicMaterial({ color: 0x606060 });
+    const torch  = new THREE.MeshBasicMaterial({ color: 0xff6020 });
     return { stone, floor, ceil, wood, iron, torch };
   }
 
