@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
+import * as THREE from '/vendor/three.module.js';
 
 const CELL = 4; // 4m per tile
 
@@ -137,7 +137,7 @@ export class DungeonManager {
     light.position.set(x, y + 0.3, z);
     light.castShadow = false;
     this.scene.add(light);
-    this.lights.push({ light, baseY: y + 0.3, time: Math.random() * Math.PI * 2 });
+    this.lights.push({ light, baseY: y + 0.3, baseIntensity: 2.0, time: Math.random() * Math.PI * 2 });
   }
 
   _addDoors() {
@@ -302,7 +302,8 @@ export class DungeonManager {
   updateLights(dt) {
     this.lights.forEach(l => {
       l.time += dt;
-      l.light.intensity = 1.2 + Math.sin(l.time * 7.3) * 0.15 + Math.sin(l.time * 13.7) * 0.08;
+      // Flicker around the base intensity stored at creation time
+      l.light.intensity = l.baseIntensity + Math.sin(l.time * 7.3) * 0.18 + Math.sin(l.time * 13.7) * 0.1;
       l.light.position.y = l.baseY + Math.sin(l.time * 5.1) * 0.03;
     });
   }

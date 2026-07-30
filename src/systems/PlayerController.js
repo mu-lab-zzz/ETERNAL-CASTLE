@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
+import * as THREE from '/vendor/three.module.js';
 
 const WALK_SPEED  = 3.5;
 const RUN_SPEED   = 6.0;

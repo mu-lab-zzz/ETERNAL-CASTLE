@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
+import * as THREE from '/vendor/three.module.js';
 
 // Phase 1 boss: Ancient Knight Guardian
 // Encountered deep in the underground chapel

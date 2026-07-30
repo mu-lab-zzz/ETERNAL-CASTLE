@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
+import * as THREE from '/vendor/three.module.js';
 import { PlayerController }  from './systems/PlayerController.js';
 import { DungeonManager }    from './world/DungeonManager.js';
 import { EnemyManager }      from './entities/EnemyManager.js';
