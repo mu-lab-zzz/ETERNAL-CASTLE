@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ETERNAL CASTLE - 3Dブロック組み立てゲーム</title>
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- HUD -->
+    <div id="hud">
+      <div id="crosshair">+</div>
+
+      <div id="toolbar">
+        <div class="toolbar-label">ブロック選択</div>
+        <div id="block-palette">
+          <button class="block-btn active" data-color="#e74c3c" data-name="レンガ" style="--c:#e74c3c">
+            <span class="block-preview"></span><span class="block-name">レンガ</span>
+          </button>
+          <button class="block-btn" data-color="#3498db" data-name="氷" style="--c:#3498db">
+            <span class="block-preview"></span><span class="block-name">氷</span>
+          </button>
+          <button class="block-btn" data-color="#2ecc71" data-name="草" style="--c:#2ecc71">
+            <span class="block-preview"></span><span class="block-name">草</span>
+          </button>
+          <button class="block-btn" data-color="#f39c12" data-name="砂" style="--c:#f39c12">
+            <span class="block-preview"></span><span class="block-name">砂</span>
+          </button>
+          <button class="block-btn" data-color="#95a5a6" data-name="石" style="--c:#95a5a6">
+            <span class="block-preview"></span><span class="block-name">石</span>
+          </button>
+          <button class="block-btn" data-color="#8e44ad" data-name="魔石" style="--c:#8e44ad">
+            <span class="block-preview"></span><span class="block-name">魔石</span>
+          </button>
+          <button class="block-btn" data-color="#d35400" data-name="木材" style="--c:#d35400">
+            <span class="block-preview"></span><span class="block-name">木材</span>
+          </button>
+          <button class="block-btn" data-color="#1abc9c" data-name="宝石" style="--c:#1abc9c">
+            <span class="block-preview"></span><span class="block-name">宝石</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="controls-panel">
+        <div class="panel-title">操作方法</div>
+        <div class="control-row"><kbd>W A S D</kbd> 移動</div>
+        <div class="control-row"><kbd>マウス</kbd> 視点回転</div>
+        <div class="control-row"><kbd>左クリック</kbd> ブロック設置</div>
+        <div class="control-row"><kbd>右クリック</kbd> ブロック削除</div>
+        <div class="control-row"><kbd>スクロール</kbd> ズーム</div>
+        <div class="control-row"><kbd>Space</kbd> 上昇</div>
+        <div class="control-row"><kbd>Shift</kbd> 下降</div>
+        <div class="control-row"><kbd>G</kbd> グリッド表示切替</div>
+      </div>
+
+      <div id="status-bar">
+        <span id="block-count">ブロック数: 0</span>
+        <span id="selected-block-name">選択中: レンガ</span>
+        <span id="coords">位置: (0, 0, 0)</span>
+      </div>
+
+      <div id="action-buttons">
+        <button id="btn-clear" title="全消去">🗑️ クリア</button>
+        <button id="btn-save" title="保存">💾 保存</button>
+        <button id="btn-load" title="読み込み">📂 読み込み</button>
+        <button id="btn-screenshot" title="スクリーンショット">📷 撮影</button>
+      </div>
+    </div>
+
+    <!-- モーダル -->
+    <div id="modal-overlay" class="hidden">
+      <div id="modal">
+        <div id="modal-title"></div>
+        <div id="modal-body"></div>
+        <div id="modal-actions">
+          <button id="modal-confirm">OK</button>
+          <button id="modal-cancel">キャンセル</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 起動画面 -->
+    <div id="splash">
+      <div id="splash-content">
+        <h1>⚔️ ETERNAL CASTLE</h1>
+        <p>3Dブロック組み立てゲーム</p>
+        <button id="btn-start">ゲーム開始</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

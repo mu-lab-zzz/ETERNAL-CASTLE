@@ -1,0 +1,405 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-dark: rgba(10, 10, 20, 0.85);
+  --bg-panel: rgba(20, 20, 40, 0.9);
+  --accent: #f0c040;
+  --accent2: #60aaff;
+  --text: #e8e8f0;
+  --text-muted: #8888aa;
+  --border: rgba(255, 255, 255, 0.15);
+  --radius: 8px;
+}
+
+body {
+  font-family: 'Segoe UI', 'Hiragino Sans', sans-serif;
+  background: #000;
+  overflow: hidden;
+  user-select: none;
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+/* ─── HUD ─────────────────────────────────── */
+#hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+#crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255,255,255,0.8);
+  font-size: 24px;
+  font-weight: 100;
+  text-shadow: 0 0 4px #000;
+  pointer-events: none;
+}
+
+/* ─── Toolbar ─────────────────────────────── */
+#toolbar {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  pointer-events: all;
+  backdrop-filter: blur(12px);
+}
+
+.toolbar-label {
+  color: var(--text-muted);
+  font-size: 11px;
+  text-align: center;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+#block-palette {
+  display: flex;
+  gap: 6px;
+}
+
+.block-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.05);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  padding: 8px 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-width: 56px;
+  color: var(--text);
+}
+
+.block-btn:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.3);
+  transform: translateY(-2px);
+}
+
+.block-btn.active {
+  border-color: var(--accent);
+  background: rgba(240,192,64,0.15);
+  box-shadow: 0 0 12px rgba(240,192,64,0.3);
+}
+
+.block-preview {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background: var(--c);
+  box-shadow: inset -3px -3px 6px rgba(0,0,0,0.4), inset 2px 2px 4px rgba(255,255,255,0.2);
+  display: block;
+}
+
+.block-name {
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.block-btn.active .block-name {
+  color: var(--accent);
+}
+
+/* ─── Controls Panel ──────────────────────── */
+#controls-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  min-width: 180px;
+}
+
+.panel-title {
+  color: var(--accent2);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 4px 0;
+  gap: 8px;
+}
+
+kbd {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-family: monospace;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* ─── Status Bar ──────────────────────────── */
+#status-bar {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+
+#status-bar span {
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  backdrop-filter: blur(6px);
+}
+
+#status-bar span strong {
+  color: var(--text);
+}
+
+/* ─── Action Buttons ──────────────────────── */
+#action-buttons {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: all;
+}
+
+#action-buttons button {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 14px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.15s;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+#action-buttons button:hover {
+  background: rgba(96,170,255,0.15);
+  border-color: var(--accent2);
+  color: var(--accent2);
+}
+
+/* ─── Modal ───────────────────────────────── */
+#modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+#modal-overlay.hidden {
+  display: none;
+}
+
+#modal {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  min-width: 320px;
+  max-width: 480px;
+  color: var(--text);
+}
+
+#modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+#modal-body {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+#modal-body textarea {
+  width: 100%;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 8px;
+  font-size: 12px;
+  font-family: monospace;
+  resize: vertical;
+  min-height: 80px;
+  margin-top: 8px;
+}
+
+#modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+#modal-actions button {
+  padding: 8px 20px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+#modal-confirm {
+  background: var(--accent);
+  color: #000;
+  font-weight: 600;
+  border-color: var(--accent);
+}
+
+#modal-confirm:hover {
+  background: #ffd060;
+}
+
+#modal-cancel {
+  background: transparent;
+  color: var(--text-muted);
+}
+
+#modal-cancel:hover {
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+}
+
+/* ─── Splash Screen ───────────────────────── */
+#splash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #0a0a2e 0%, #000010 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  transition: opacity 0.6s;
+}
+
+#splash.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#splash-content {
+  text-align: center;
+}
+
+#splash-content h1 {
+  font-size: 52px;
+  color: var(--accent);
+  text-shadow: 0 0 30px rgba(240,192,64,0.5);
+  letter-spacing: 6px;
+  margin-bottom: 12px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+#splash-content p {
+  color: var(--text-muted);
+  font-size: 18px;
+  margin-bottom: 40px;
+  letter-spacing: 2px;
+}
+
+#btn-start {
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  padding: 14px 48px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.2s;
+  box-shadow: 0 0 30px rgba(240,192,64,0.4);
+}
+
+#btn-start:hover {
+  background: #ffd060;
+  transform: scale(1.05);
+  box-shadow: 0 0 50px rgba(240,192,64,0.6);
+}
+
+@keyframes pulse {
+  0%, 100% { text-shadow: 0 0 30px rgba(240,192,64,0.5); }
+  50% { text-shadow: 0 0 60px rgba(240,192,64,0.9), 0 0 100px rgba(240,192,64,0.3); }
+}
+
+/* ─── Pointer lock hint ───────────────────── */
+#pointer-hint {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 18px;
+  color: var(--text-muted);
+  font-size: 13px;
+  pointer-events: none;
+  transition: opacity 0.4s;
+  backdrop-filter: blur(6px);
+}
+
+#pointer-hint.hidden {
+  opacity: 0;
+}
