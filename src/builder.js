@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from './three.js';
 import { getBlockType, getBlockGeometry, getAnchorFromHit, getMeshCenter, getEffectiveDims } from './block-defs.js';
 import { getGhostMaterial } from './materials.js';
 import { playSnap, playErase } from './audio.js';

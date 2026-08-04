@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from './three.js';
 
 export const COLORS = [
   { hex: '#e74c3c', name: '赤' },
