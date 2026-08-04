@@ -1,4 +1,3 @@
-import * as THREE from './three.js';
 
 export class OrbitCamera {
   constructor(camera, canvas) {

@@ -1,4 +1,3 @@
-import * as THREE from './three.js';
 
 const GEO_CACHE = new Map();
 
