@@ -2,93 +2,135 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ETERNAL CASTLE - 3Dブロック組み立てゲーム</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>BLOCK CRAFT - 3D積み木アプリ</title>
   <link rel="stylesheet" href="styles/main.css" />
 </head>
 <body>
-  <div id="app">
-    <canvas id="gameCanvas"></canvas>
+  <canvas id="gameCanvas"></canvas>
 
-    <!-- HUD -->
-    <div id="hud">
-      <div id="crosshair">+</div>
+  <!-- ── HUD ── -->
+  <div id="hud">
 
-      <div id="toolbar">
-        <div class="toolbar-label">ブロック選択</div>
-        <div id="block-palette">
-          <button class="block-btn active" data-color="#e74c3c" data-name="レンガ" style="--c:#e74c3c">
-            <span class="block-preview"></span><span class="block-name">レンガ</span>
-          </button>
-          <button class="block-btn" data-color="#3498db" data-name="氷" style="--c:#3498db">
-            <span class="block-preview"></span><span class="block-name">氷</span>
-          </button>
-          <button class="block-btn" data-color="#2ecc71" data-name="草" style="--c:#2ecc71">
-            <span class="block-preview"></span><span class="block-name">草</span>
-          </button>
-          <button class="block-btn" data-color="#f39c12" data-name="砂" style="--c:#f39c12">
-            <span class="block-preview"></span><span class="block-name">砂</span>
-          </button>
-          <button class="block-btn" data-color="#95a5a6" data-name="石" style="--c:#95a5a6">
-            <span class="block-preview"></span><span class="block-name">石</span>
-          </button>
-          <button class="block-btn" data-color="#8e44ad" data-name="魔石" style="--c:#8e44ad">
-            <span class="block-preview"></span><span class="block-name">魔石</span>
-          </button>
-          <button class="block-btn" data-color="#d35400" data-name="木材" style="--c:#d35400">
-            <span class="block-preview"></span><span class="block-name">木材</span>
-          </button>
-          <button class="block-btn" data-color="#1abc9c" data-name="宝石" style="--c:#1abc9c">
-            <span class="block-preview"></span><span class="block-name">宝石</span>
-          </button>
-        </div>
-      </div>
+    <!-- クロスヘア -->
+    <div id="crosshair">＋</div>
 
-      <div id="controls-panel">
-        <div class="panel-title">操作方法</div>
-        <div class="control-row"><kbd>W A S D</kbd> 移動</div>
-        <div class="control-row"><kbd>マウス</kbd> 視点回転</div>
-        <div class="control-row"><kbd>左クリック</kbd> ブロック設置</div>
-        <div class="control-row"><kbd>右クリック</kbd> ブロック削除</div>
-        <div class="control-row"><kbd>スクロール</kbd> ズーム</div>
-        <div class="control-row"><kbd>Space</kbd> 上昇</div>
-        <div class="control-row"><kbd>Shift</kbd> 下降</div>
-        <div class="control-row"><kbd>G</kbd> グリッド表示切替</div>
-      </div>
-
-      <div id="status-bar">
-        <span id="block-count">ブロック数: 0</span>
-        <span id="selected-block-name">選択中: レンガ</span>
-        <span id="coords">位置: (0, 0, 0)</span>
-      </div>
-
-      <div id="action-buttons">
-        <button id="btn-clear" title="全消去">🗑️ クリア</button>
-        <button id="btn-save" title="保存">💾 保存</button>
-        <button id="btn-load" title="読み込み">📂 読み込み</button>
-        <button id="btn-screenshot" title="スクリーンショット">📷 撮影</button>
-      </div>
+    <!-- ステータスバー（上） -->
+    <div id="topbar">
+      <div id="block-count">ブロック: 0</div>
+      <div id="app-title">BLOCK CRAFT</div>
+      <button id="btn-menu" aria-label="メニュー">☰</button>
     </div>
 
-    <!-- モーダル -->
-    <div id="modal-overlay" class="hidden">
-      <div id="modal">
-        <div id="modal-title"></div>
-        <div id="modal-body"></div>
-        <div id="modal-actions">
-          <button id="modal-confirm">OK</button>
-          <button id="modal-cancel">キャンセル</button>
-        </div>
-      </div>
+    <!-- モードボタン（左側） -->
+    <div id="mode-panel">
+      <button id="btn-navigate" class="mode-btn" title="移動">
+        <span>👁</span><small>移動</small>
+      </button>
+      <button id="btn-build" class="mode-btn active" title="ブロック配置">
+        <span>🧱</span><small>配置</small>
+      </button>
+      <button id="btn-erase" class="mode-btn" title="削除">
+        <span>🗑</span><small>削除</small>
+      </button>
+      <div class="mode-divider"></div>
+      <button id="btn-rotate" class="mode-btn" title="回転">
+        <span>🔄</span><small id="rot-label">0°</small>
+      </button>
+      <button id="btn-grid" class="mode-btn" title="グリッド">
+        <span>⊞</span><small>グリッド</small>
+      </button>
     </div>
 
-    <!-- 起動画面 -->
-    <div id="splash">
-      <div id="splash-content">
-        <h1>⚔️ ETERNAL CASTLE</h1>
-        <p>3Dブロック組み立てゲーム</p>
-        <button id="btn-start">ゲーム開始</button>
+    <!-- アクション（右下浮きボタン） -->
+    <div id="build-actions" class="fab-group">
+      <button id="btn-place" class="fab fab-place" aria-label="ここに置く">✚</button>
+    </div>
+    <div id="erase-actions" class="fab-group hidden">
+      <button id="btn-erase-center" class="fab fab-erase" aria-label="削除">✕</button>
+    </div>
+
+    <!-- ── ボトムバー ── -->
+    <div id="bottombar">
+
+      <!-- タブ切り替え -->
+      <div id="tab-bar">
+        <button class="tab-btn active" data-tab="blocks">🧱 ブロック</button>
+        <button class="tab-btn" data-tab="colors">🎨 色</button>
+        <button class="tab-btn" data-tab="material">✨ 素材</button>
+        <button class="tab-btn" data-tab="save">💾 保存</button>
       </div>
+
+      <!-- タブコンテンツ -->
+      <div id="tab-content">
+
+        <div id="tab-blocks" class="tab-panel active">
+          <div id="block-picker" class="picker-scroll"></div>
+        </div>
+
+        <div id="tab-colors" class="tab-panel">
+          <div id="color-picker" class="color-grid"></div>
+          <div id="selected-color" style="background:#e74c3c"></div>
+        </div>
+
+        <div id="tab-material" class="tab-panel">
+          <div id="mat-picker" class="mat-row"></div>
+        </div>
+
+        <div id="tab-save" class="tab-panel">
+          <div class="save-grid">
+            <button id="btn-save">💾 保存</button>
+            <button id="btn-load">📂 読込</button>
+            <button id="btn-export">📤 書き出し</button>
+            <button id="btn-import">📥 読み込み</button>
+            <button id="btn-qr">🔳 QR共有</button>
+            <button id="btn-screenshot">📷 撮影</button>
+            <button id="btn-clear" class="danger">🗑 全消去</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── モーダル ── -->
+  <div id="modal-overlay" class="hidden">
+    <div id="modal">
+      <div id="modal-title"></div>
+      <div id="modal-body"></div>
+      <div id="modal-actions">
+        <button id="modal-cancel">キャンセル</button>
+        <button id="modal-confirm">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ファイル入力（非表示） -->
+  <input type="file" id="file-input" accept=".json" style="display:none" />
+
+  <!-- ── スタート画面 ── -->
+  <div id="splash">
+    <div class="splash-deco deco-1">⬛</div>
+    <div class="splash-deco deco-2">🟥</div>
+    <div class="splash-deco deco-3">🟦</div>
+    <div class="splash-deco deco-4">🟩</div>
+    <div id="splash-content">
+      <div class="splash-logo">
+        <span class="logo-block b1">B</span>
+        <span class="logo-block b2">L</span>
+        <span class="logo-block b3">O</span>
+        <span class="logo-block b4">C</span>
+        <span class="logo-block b5">K</span>
+      </div>
+      <div class="splash-sub">CRAFT</div>
+      <p class="splash-catch">スマホの中の、無限の積み木箱</p>
+      <button id="btn-start">
+        <span>▶</span> 作り始める
+      </button>
+      <p class="splash-hint">👆 タップでブロックを置く<br>✌ 2本指でズーム</p>
     </div>
   </div>
 
@@ -100,6 +142,20 @@
       }
     }
   </script>
+  <!-- QR code library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <script type="module" src="src/main.js"></script>
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + tab)?.classList.add('active');
+      });
+    });
+  </script>
 </body>
 </html>
